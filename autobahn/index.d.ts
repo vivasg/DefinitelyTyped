@@ -1,4 +1,4 @@
-// Type definitions for AutobahnJS v0.9.6
+// Type definitions for AutobahnJS v0.11.2
 // Project: http://autobahn.ws/js/
 // Definitions by: Elad Zelingher <https://github.com/darkl/>, Andy Hawkins <https://github.com/a904guy/,http://a904guy.com/,http://www.bmbsqd.com>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -10,13 +10,46 @@ export = autobahn;
 declare namespace autobahn {
 
     export class Session {
+        /**
+         * Returns the session ID as an integer. A read-only property.
+         * @since 0.9.2
+         */
         id: number;
+        /**
+         * Returns the realm the session is attached to as a string. A read-only property.
+         * @since 0.9.2
+         */
         realm: string;
+        /**
+         * Returns true if the session is open and attached to a realm. A read-only property.
+         * @since 0.9.1
+         */
         isOpen: boolean;
+        /**
+         * Returns an object with the roles the client implements and the available advanced features for each role.
+         * A read-only property.
+         * @since 0.9.1
+         */
         features: any;
+        /**
+         * Returns true if the value has been changed for the session from the default false.
+         * @since 0.9.7
+         */
         caller_disclose_me: boolean;
+        /**
+         * Returns true if the value has been changed for the session from the default false.
+         * @since 0.9.7
+         */
         publisher_disclose_me: boolean;
+        /**
+         * Returns an array with the subscription objects for all currently active subscriptions. A read-only property.
+         * @since 0.9.1
+         */
         subscriptions: ISubscription[][];
+        /**
+         * Returns an array with the registration objects for all currently active registrations. A read-only property.
+         * @since 0.9.1
+         */
         registrations: IRegistration[];
 
         constructor(transport: ITransport, defer: DeferFactory, challenge: OnChallengeHandler);
@@ -40,6 +73,10 @@ declare namespace autobahn {
         prefix(prefix: string, uri: string): void;
 
         resolve(curie: string): string;
+        /**
+         * Method for convenient logging from sessions.
+         */
+        log(message?: any, ...optionalParams: any[]): void;
 
         onjoin: (roleFeatures: any) => void;
         onleave: (reason: string, details: any) => void;
@@ -180,19 +217,74 @@ declare namespace autobahn {
     }
 
     export class Connection {
+        /**
+         * Returns an instance of autobahn.Session if there is a session currently running on the connection.
+         * A read-only property.
+         */
+        session: Session;
+        /**
+         * Returns true if the Connection is open. A read-only property.
+         * @since 0.9.2
+         */
+        isConnected: boolean;
+        /**
+         * Returns true if the underlying session is open. A read-only property.
+         */
+        isOpen: boolean;
+        /**
+         * Returns true if reconnects are being attempted. A read-only property.
+         * @since 0.9.2
+         */
+        isRetrying: boolean;
+        /**
+         * Holds a transport instance when connected. A read-only property.
+         * @since 0.9.5
+         */
+        // TODO: check type
+        transport: ITransportDefinition;
+
+        /**
+         * Create a new connection, but does not open.
+         */
         constructor(options?: IConnectionOptions);
 
+        /**
+         * To open a created connection. If connection already open or opening an exception will be thrown.
+         */
         open(): void;
 
+        /**
+         * To close a connection. If connection already close an exception will be thrown.
+         * @param reason - optional WAMP URI providing a closing reason, e.g. com.myapp.close.signout to
+         * the server-side. If no reason is given, the default URI wamp.goodbye.normal is sent.
+         * @param message – optional (human readable) closing message.
+         */
         close(reason?: string, message?: string): void;
 
+        /**
+         * Is fired when the connection has been established and a new session was created.
+         */
         onopen: (session: Session, details: any) => void;
+        /**
+         * Is fired when the connection has been closed explicitly, was lost or
+         * could not be established in the first place.
+         * @return If true subsequent next retry attempt will be canceled.
+         */
         onclose: (reason: string, details: any) => boolean;
     }
 
     interface ITransportDefinition {
+        /**
+         * The URL the transport is connected to.
+         */
         url?: string;
+        /**
+         * The WAMP protocol in use, e.g. wamp.2.json.
+         */
         protocols?: string[];
+        /**
+         * Type of transport: websocket or longpoll.
+         */
         type: string;
     }
 
@@ -214,7 +306,10 @@ declare namespace autobahn {
         url?: string;
         protocols?: string[];
         onchallenge?: OnChallengeHandler;
-        realm?: string;
+        /**
+         * The WAMP realm to join. Required options.
+         */
+        realm: string;
         authmethods?: string[];
         authid?: string;
     }
