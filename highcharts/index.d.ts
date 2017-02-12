@@ -49,6 +49,12 @@ declare namespace Highcharts {
     interface AxisEvent extends Event {
         min: number;
         max: number;
+        trigger: string;
+        type: string;
+        dataMax: number;
+        dataMin: number;
+        userMax: number;
+        userMin: number;
     }
 
     interface AxisLabels {
