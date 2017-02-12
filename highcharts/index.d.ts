@@ -6357,6 +6357,8 @@ declare namespace Highcharts {
          * @since 1.2.0
          */
         y: number;
+
+        onMouseOver(e?: any, byProximity?: boolean): void;
     }
 
     /**
@@ -6488,6 +6490,8 @@ declare namespace Highcharts {
          * @since 1.2.0
          */
         yAxis: AxisObject;
+
+        searchPoint(e:any, compareX: boolean): PointObject;
     }
 
     interface LegendObject {
