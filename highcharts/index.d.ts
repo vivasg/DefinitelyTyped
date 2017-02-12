@@ -5785,6 +5785,8 @@ declare namespace Highcharts {
          * @since 3.0
          */
         update(options: AxisOptions, redraw?: boolean): void;
+
+        drawCrosshair(e?: any, point?: PointObject): void;
     }
 
     /**
