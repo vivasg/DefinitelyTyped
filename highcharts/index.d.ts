@@ -5998,6 +5998,10 @@ declare namespace Highcharts {
         renderer: RendererObject;
 
         legend: LegendObject;
+
+        pointer: PointerObject;
+
+        tooltip: TooltipObject;
     }
 
     interface Chart {
@@ -6486,6 +6490,48 @@ declare namespace Highcharts {
          * @since 5.0.0
          */
         update(options: LegendOptions, redraw?: boolean): void;
+    }
+
+    interface PointerObject {
+        init(chart: any, options: any): void;
+        zoomOption(e: any): void;
+        normalize(e: any, chartPosition?: any): any;
+        getCoordinates(e: any): any;
+        runPointActions(e: any): void;
+        reset(allowMove: any, delay: any): void;
+        scaleGroups(attribs: any, clip: any): void;
+        dragStart(e: any): void;
+        drag(e: any): void;
+        drop(e: any): void;
+        onContainerMouseDown(e: any): void;
+        onDocumentMouseUp(e: any): void;
+        onDocumentMouseMove(e: any): void;
+        onContainerMouseLeave(e: any): void;
+        onContainerMouseMove(e: any): void;
+        inClass(element: any, className: string): void;
+        onTrackerMouseOut(e: any): void;
+        onContainerClick(e: any): void;
+        setDOMEvents(): void;
+        destroy(): void;
+    }
+
+    interface TooltipObject {
+        init(chart: any, options: any): void;
+        cleanSplit(force: boolean): void;
+        getLabel(): any;
+        update(options: TooltipOptions): void;
+        destroy(): void;
+        hide(delay: any): void;
+        getAnchor(points: any, mouseEvent?: any): any;
+        getPosition(boxWidth: any, boxHeight: any, point: any): any;
+        defaultFormatter(tooltip: any): string | string[];
+        refresh(point: any, mouseEvent?: any): void;
+        renderSplit(labels: any, points: any): void;
+        updatePosition(point: any): void;
+        getDateFormat(range: number, date: number | Date, startOfWeek: number, dateTimeLabelFormats: any): string;
+        getXDateFormat(point: any, options: any, xAxis: any): any;
+        tooltipFooterHeaderFormatter(labelConfig: any, isFooter: boolean): any;
+        bodyFormatter(items: any): any;
     }
 }
 
